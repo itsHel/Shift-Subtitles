@@ -1,38 +1,196 @@
-.App {
-  text-align: center;
+:root{
+	--gray: #474747;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+	margin: 0;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#app{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 40px;
+}
+#app > *{
+	width: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#root{
+	margin: 20px auto;
+	max-width: 800px;
+	padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+#title{
+	margin: 0;
+	text-align: center;
+	color: var(--gray);
+}
+.underline{
+	text-decoration: underline;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.drop{
+	min-height: 320px;
+	text-align: center;
+	padding: 8px 14px;
+	border: 2px dashed #212529;
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 8px;
+	border-radius: 12px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	background: white;
+}
+.dragging{
+  	border: 2px dashed #dc3545 !important;
+}
+#drop-svg{
+	width: 60px;
+	height: 60px;
+	fill: var(--gray);
+}
+.drop-input{
+  	display: none;
+}
+.file-info{
+	font-size: 20px;
+  	pointer-events: none;
+}
+#file-name-alt{
+  	user-select: none;
+}
+
+.controls{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	gap:50px;
+}
+.controls-generate{
+	display: flex;
+	justify-content: space-between;
+}
+.controls-generate{
+	flex-direction: column;
+	gap:20px;
+}
+.controls-generate > *{
+	display: inline-block;
+}
+
+#change-input-wrapper{
+	position: relative;
+}
+#change-input{
+	width:120px;
+	font-size: 20px;
+	height: 40px;
+	box-sizing: border-box;
+	text-align: right;
+	border:1px solid #212529;
+	transition: all 0.1s;
+	padding-right:28px;
+}
+#units{
+	font-size: 20px;
+	color: var(--gray);
+	position: absolute;
+	top:0;
+	right:0;
+	padding:3px 6px;
+}
+#share{
+	margin-top: 40px;
+	display: none;
+}
+#change-input:focus{
+	outline: none;
+	border-color: #00b5dd;
+    box-shadow: 0 0 2px 1px #00b5dd66;
+}
+.blue-button-hidden{
+	color: white;
+	overflow: hidden;
+	border-radius: 8px;
+	display: inline-block;
+	padding: 10px 20px;
+	font-weight: 500;
+	position: relative;
+	font-size: 20px;
+	border: none;
+	cursor: pointer;
+	min-width: max-content !important;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+	background-image: linear-gradient(to bottom, #00d2ff 0%, #3a7bd5 100%);
+	background-image: -webkit-linear-gradient(to bottom, #00d2ff 0%, #3a7bd5 100%);
+	transition: all 0.3s cubic-bezier(.54,1.5,.38,1.11);
+
+	opacity: 0;
+	transform: scale(0.85);
+	pointer-events: none;
+}
+.show-button{
+	opacity: 1;
+	transform: none;
+	pointer-events: all;
+}
+.blue-button-hidden:active{
+	filter: grayscale(0.25);
+	transition: none;
+	box-shadow: inset 0 0 6px 4px #205660, 0 1px 0 #eeeeee;
+	background-image: linear-gradient(to bottom, #00bcd9 0%, #2855a6 100%);
+	background-image: -webkit-linear-gradient(to bottom, #00bcd9 0%, #2855a6 100%);
+}
+.timer-buttons{
+	display: flex;
+}
+.timer-buttons .blue-button-hidden{
+	width: 40px;
+    height: 40px;
+	border-radius: 0;
+	font-size: 26px;
+	font-size: 22px;
+    padding: 0;
+}
+#change-input{
+	border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+#minus{
+	border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.preview{
+	font-family:courier, courier new, serif;
+	color: var(--gray);
+	max-width: 560px;
+	padding: 16px 20px;
+	font-style: italic;
+	border-radius: 12px;
+	border: 1px solid rgba(0,0,0,0.2);
+	box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%);
+	transition: all 0.3s cubic-bezier(.54,1.5,.38,1.11);
+
+	opacity: 0;
+	transform: scale(0.85);
+	pointer-events: none;
+}
+.preview-text{
+	margin: 0;
+	font-size: 14px;
+}
+.show-preview{
+	opacity: 1;
+	transform: none;
+	pointer-events: all;
 }
