@@ -131,7 +131,6 @@ body{
 	min-width: max-content !important;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 	background-image: linear-gradient(to bottom, #00d2ff 0%, #3a7bd5 100%);
-	background-image: -webkit-linear-gradient(to bottom, #00d2ff 0%, #3a7bd5 100%);
 	transition: all 0.3s cubic-bezier(.54,1.5,.38,1.11);
 
 	opacity: 0;
@@ -148,7 +147,6 @@ body{
 	transition: none;
 	box-shadow: inset 0 0 6px 4px #205660, 0 1px 0 #eeeeee;
 	background-image: linear-gradient(to bottom, #00bcd9 0%, #2855a6 100%);
-	background-image: -webkit-linear-gradient(to bottom, #00bcd9 0%, #2855a6 100%);
 }
 .timer-buttons{
 	display: flex;
