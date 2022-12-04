@@ -10,6 +10,7 @@ import './Popup.css';
 const previewRows = 9;
 const changeValueMultiplier = 1000;
 const serverUrl = "https://ten-responsible-bayberry.glitch.me";
+// const serverUrl = "http://localhost:8080";
 
 export default class App extends React.Component{
 	constructor(props){
@@ -27,6 +28,8 @@ export default class App extends React.Component{
 			fileContent: "",
 			preview: "",
 			timer: "0.000",
+			lastUpload: "",
+			lastLink: "",
 			popup: {
 				visible: false,
 				type: "",
@@ -109,8 +112,13 @@ export default class App extends React.Component{
 
 		if(upload){
 			let filename = this.state.filename.replaceAll(/&|\/|\\|\?/g, "");
-			let formData = new FormData();
+			// If file already exists copy link
+			if(this.state.lastUpload == filename + this.state.timer){				
+				navigator.clipboard.writeText(this.state.lastLink);
+				return;
+			}
 
+			let formData = new FormData();
 			formData.append("content", newContent);
 			formData.append("filename", filename);
 			
@@ -120,9 +128,16 @@ export default class App extends React.Component{
 					try{
 						navigator.clipboard.writeText(window.location.origin + "?id=" + text);
 						this.setupPopup({type: "success", text: "Link copied"});
+						this.setState({
+							lastUpload: filename + this.state.timer,
+							lastLink: window.location.origin + "?id=" + text
+						});
 					} catch(err){
 						this.setupPopup({type: "error", text: "I just don't know what went wrong"});
 					}
+				})
+				.catch((err) => {
+					this.setupPopup({type: "error", text: "I just don't know what went wrong"});
 				});
 		} else {
 			let link = document.createElement("a");
