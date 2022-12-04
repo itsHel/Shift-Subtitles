@@ -109,8 +109,8 @@ body{
 	padding:3px 6px;
 }
 #share{
-	margin-top: 40px;
-	display: none;
+	/* margin-top: 40px; */
+	/* display: none; */
 }
 #change-input:focus{
 	outline: none;

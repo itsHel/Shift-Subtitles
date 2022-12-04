@@ -31,7 +31,7 @@
 .popup-icons{
   width: 32px;
   height: 32px;
-  margin-left: -6px;
+  margin-left: -8px;
 }
 
 .popup > div{
@@ -45,10 +45,10 @@
   fill: var(--popup-error-color);
 }
 
-.popup-succ {
+.popup-success {
   border-left: 5px solid var(--popup-succ-color);
 }
-.popup-succ .popup-icons {
+.popup-success .popup-icons {
   fill: var(--popup-succ-color);
   margin-right: 5px;
 }

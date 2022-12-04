@@ -59,8 +59,8 @@ export default class Controls extends React.Component{
                         <button id="plus" className="blue-button-hidden show-button" onClick={() => this.updateTimer(1)} title={"+" + (updateStep * 1000) + "ms"}>+</button>
                         <button id="minus" className="blue-button-hidden show-button" onClick={() => this.updateTimer(-1)} title={"-" + (updateStep * 1000) + "ms"}>-</button>
                     </div>
-                    <button className={"blue-button-hidden" + showButton} onClick={() => this.props.generate(this.props.timerValue)} id="generate">Generate</button>
-                    <button className={"blue-button-hidden" + showButton} onClick={() => this.props.share(this.props.timerValue)} id="share">Copy share link</button>
+                    <button className={"blue-button-hidden" + showButton} onClick={() => this.props.generate()} id="generate">Generate</button>
+                    <button className={"blue-button-hidden" + showButton} onClick={() => this.props.generate(true)} id="share">Copy share link</button>
                 </div>
             </div>
         )
