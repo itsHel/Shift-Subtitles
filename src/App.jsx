@@ -1,16 +1,16 @@
 import React from 'react';
-import Controls from './Controls';
-import Dropbox from './Dropbox';
-import Popup from './Popup';
-import Header from './Header';
-import Preview from './Preview';
-import './App.css';
-import './Popup.css';
+import Controls from './component/Controls';
+import Dropbox from './component/Dropbox';
+import Popup from './component/Popup';
+import Header from './component/Header';
+import Preview from './component/Preview';
+import './css/App.css';
+import './css/Popup.css';
 
 const previewRows = 9;
 const changeValueMultiplier = 1000;
+const getTimingRegex = /(\d\d:\d\d:\d\d,\d\d\d)\s+-->\s+(\d\d:\d\d:\d\d,\d\d\d)/g;			// 00:00:27,749 --> 00:00:29,708
 const serverUrl = "https://ten-responsible-bayberry.glitch.me";
-// const serverUrl = "http://localhost:8080";
 
 export default class App extends React.Component{
 	constructor(props){
@@ -34,12 +34,13 @@ export default class App extends React.Component{
 				visible: false,
 				type: "",
 				text: ""
-			}
+			},
+			popupTimeout: 0
 		}
 	}
 
 	componentDidMount(){
-		// Download file if shared link
+		// Download file if it's shared link
 		if(window.location.search.match(/\?id=/)){
 			fetch(serverUrl + "/download" + window.location.search, {method: "POST"})
 				.then(response => response.text())
@@ -49,7 +50,7 @@ export default class App extends React.Component{
 						return;
 					}
 
-					let filename = window.location.search.replace("?id=", "").replace(/\.[^.]+$/, "");
+					let filename = decodeURI(window.location.search.replace("?id=", "").replace(/\.[^.]+$/, ""));
 
 					let link = document.createElement("a");
 					let blob = new Blob([text], {type: "text/plain"});
@@ -79,7 +80,7 @@ export default class App extends React.Component{
 	}
 
 	setupPopup(popup){
-		const popupTimeout = 5000;
+		const popupTimeout = 6000;
 
 		this.setState({
 			popup: {
@@ -89,29 +90,42 @@ export default class App extends React.Component{
 			}
 		});
 
-		setTimeout(() => {
-			this.hidePopup();
-		}, popupTimeout);
+		clearTimeout(this.state.popupTimeout);
+
+		this.setState({
+			popupTimeout: setTimeout(() => {
+				this.hidePopup();
+			}, popupTimeout)
+		});
 	}
 
 	hidePopup(){
-		let tempPopup = this.state.popup;
-		tempPopup.visible = false;
-
-		this.setState({
-			popup: tempPopup
-		});
+		this.setState(prevState => ({
+			popup: {
+				...prevState.popup,
+				visible:false
+			}
+		}));
 	}
 
 	generate(upload = false){
 		let changeValue = this.state.timer * changeValueMultiplier;
 
-		let newContent = this.state.fileContent.replaceAll(/(\d\d:\d\d:\d\d,\d\d\d)\s+-->\s+(\d\d:\d\d:\d\d,\d\d\d)/g, function(match, time1, time2){
+		let newContent = this.state.fileContent.replaceAll(getTimingRegex, function(match, time1, time2){
 			return milisecondsToTime(timeToMiliseconds(time1) + changeValue) + " --> " + milisecondsToTime(timeToMiliseconds(time2) + changeValue);
 		});
 
-		if(upload){
+		if(!upload){
+			let link = document.createElement("a");
+			let blob = new Blob([newContent], {type: "text/plain"});
+
+			link.download = this.state.filename;
+			link.href = window.URL.createObjectURL(blob);
+	
+			link.click();
+		} else {
 			let filename = this.state.filename.replaceAll(/&|\/|\\|\?/g, "");
+
 			// If file already exists copy link
 			if(this.state.lastUpload == filename + this.state.timer){				
 				navigator.clipboard.writeText(this.state.lastLink);
@@ -126,11 +140,12 @@ export default class App extends React.Component{
 				.then(response => response.text())
 				.then(text => {
 					try{
-						navigator.clipboard.writeText(window.location.origin + "?id=" + text);
+						navigator.clipboard.writeText(window.location.origin + window.location.pathname + "?id=" + text);
+
 						this.setupPopup({type: "success", text: "Link copied"});
 						this.setState({
 							lastUpload: filename + this.state.timer,
-							lastLink: window.location.origin + "?id=" + text
+							lastLink: window.location.origin + window.location.pathname + "?id=" + text
 						});
 					} catch(err){
 						this.setupPopup({type: "error", text: "I just don't know what went wrong"});
@@ -139,13 +154,6 @@ export default class App extends React.Component{
 				.catch((err) => {
 					this.setupPopup({type: "error", text: "I just don't know what went wrong"});
 				});
-		} else {
-			let link = document.createElement("a");
-			let blob = new Blob([newContent], {type: "text/plain"});
-	
-			link.download = this.state.filename;
-			link.href = window.URL.createObjectURL(blob);
-			link.click();
 		}
     }
 
@@ -158,7 +166,7 @@ export default class App extends React.Component{
 
 		previewContent = previewContent.slice(0, getNthIndexOf(previewContent, "\r\n", previewRows));
 
-		previewContent = previewContent.replaceAll(/(\d\d:\d\d:\d\d,\d\d\d)\s+-->\s+(\d\d:\d\d:\d\d,\d\d\d)/g, function(match, time1, time2){
+		previewContent = previewContent.replaceAll(getTimingRegex, function(match, time1, time2){
 			return milisecondsToTime(timeToMiliseconds(time1) + changeValue) + " --> " + milisecondsToTime(timeToMiliseconds(time2) + changeValue);
 		});
 

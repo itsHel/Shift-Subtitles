@@ -8,8 +8,7 @@ const maxFilenameLength = 250;
 const deleteFileAfter = 604_800_000;      // Week
 const dataFolder = "./data/";
 
-// Download
-// TODO     check file validity?,,
+// TODO     check file validity
 
 app.use(formidable());
 

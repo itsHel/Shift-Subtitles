@@ -14,14 +14,14 @@ body{
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	gap: 40px;
+	gap: 30px;
 }
 #app > *{
 	width: 100%;
 }
 
 #root{
-	margin: 20px auto;
+	margin: 10px auto;
 	max-width: 800px;
 	padding: 20px;
 }
@@ -36,7 +36,7 @@ body{
 }
 
 .drop{
-	min-height: 320px;
+	min-height: 300px;
 	text-align: center;
 	padding: 8px 14px;
 	border: 2px dashed #212529;
@@ -73,7 +73,6 @@ body{
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	gap:50px;
 }
 .controls-generate{
 	display: flex;
@@ -81,7 +80,7 @@ body{
 }
 .controls-generate{
 	flex-direction: column;
-	gap:20px;
+	gap:15px;
 }
 .controls-generate > *{
 	display: inline-block;
@@ -107,10 +106,6 @@ body{
 	top:0;
 	right:0;
 	padding:3px 6px;
-}
-#share{
-	/* margin-top: 40px; */
-	/* display: none; */
 }
 #change-input:focus{
 	outline: none;
