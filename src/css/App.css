@@ -110,7 +110,7 @@ body{
 #change-input:focus{
 	outline: none;
 	border-color: #00b5dd;
-    box-shadow: 0 0 2px 1px #00b5dd66;
+	box-shadow: 0 0 2px 1px #00b5dd66;
 }
 .blue-button-hidden{
 	color: white;
@@ -148,19 +148,19 @@ body{
 }
 .timer-buttons .blue-button-hidden{
 	width: 40px;
-    height: 40px;
+	height: 40px;
 	border-radius: 0;
 	font-size: 26px;
 	font-size: 22px;
-    padding: 0;
+	padding: 0;
 }
 #change-input{
 	border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+	border-bottom-left-radius: 8px;
 }
 #minus{
 	border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 
 .preview{

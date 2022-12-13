@@ -155,7 +155,7 @@ export default class App extends React.Component{
 					this.setupPopup({type: "error", text: "I just don't know what went wrong"});
 				});
 		}
-    }
+	}
 
 	generatePreview(){
 		if(!this.state.fileContent)

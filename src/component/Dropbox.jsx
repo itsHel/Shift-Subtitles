@@ -2,7 +2,7 @@ import {useRef, useState} from "react";
 import Fileinfo from "./Fileinfo";
 
 const validateRegex = /\d\d:\d\d:\d\d,\d\d\d\s+-->\s+\d\d:\d\d:\d\d,\d\d\d/;        	// 00:00:27,749 --> 00:00:29,708
-const maxSize = 10485760;                                                          	// 10 MB
+const maxSize = 104857600;                                                          	// 100 MB
 
 export default function Dropbox(props){
 	const [userIsDragging, setUserIsDragging] = useState();
@@ -35,14 +35,14 @@ export default function Dropbox(props){
 	function handleFile(e){
 		const file = e.dataTransfer?.files[0];
 		if(file){
-            readFile(file);
+			readFile(file);
 		}
 	}
 
 	function handleInput(e){
 		const file = e.target.files[0];
-        if(file){
-            readFile(file);
+		if(file){
+			readFile(file);
 		}
 	}
 
@@ -52,18 +52,18 @@ export default function Dropbox(props){
 	}
 
 	function readFile(file){
-        if(file.size > maxSize){
-            props.setupPopup({type: "error", text: "Wrong file format"});
-            return;
-        }
-        
+		if(file.size > maxSize){
+			props.setupPopup({type: "error", text: "Wrong file format"});
+			return;
+		}
+		
 		const reader = new FileReader();
 
 		reader.addEventListener("load", (e) => {
 			const content = e.target.result;
 
 			if(!validateFile(content)){
-                props.setupPopup({type: "error", text: "Wrong file format"});
+				props.setupPopup({type: "error", text: "Wrong file format"});
 				return;
 			}
 
@@ -74,8 +74,8 @@ export default function Dropbox(props){
 
 		// TODO check if format ok
 		function validateFile(content){
-            if(!content.match(validateRegex))
-                return false;
+			if(!content.match(validateRegex))
+				return false;
 
 			return true;
 		}
