@@ -2,7 +2,7 @@ import {useRef, useState} from "react";
 import Fileinfo from "./Fileinfo";
 
 const validateRegex = /\d\d:\d\d:\d\d,\d\d\d\s+-->\s+\d\d:\d\d:\d\d,\d\d\d/;        	// 00:00:27,749 --> 00:00:29,708
-const maxSize = 104857600;                                                          	// 100 MB
+const maxSize = 10485760;                                                          	// 10 MB
 
 export default function Dropbox(props){
 	const [userIsDragging, setUserIsDragging] = useState();
