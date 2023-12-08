@@ -17,7 +17,7 @@ const particlesOptions = {
             },
         },
         opacity: {
-            value: 0.45,
+            value: 0.4,
             random: false,
             anim: {
                 enable: false,
@@ -40,7 +40,7 @@ const particlesOptions = {
             enable: true,
             distance: 125,
             color: "#ffffff",
-            opacity: 0.45,
+            opacity: 0.4,
             width: 1,
         },
         move: {
@@ -68,13 +68,13 @@ const particlesOptions = {
                 enable: true,
                 mode: "push",
             },
-            resize: true,
+            resize: false,
         },
         modes: {
             grab: {
                 distance: 250,
                 line_linked: {
-                    opacity: 0.75,
+                    opacity: 0.7,
                 },
             },
         },
