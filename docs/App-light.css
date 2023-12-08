@@ -4,7 +4,7 @@
 }
 
 html {
-    background: #ffffff;
+    background: #e9e9e9;
 }
 
 #title {
@@ -34,23 +34,18 @@ html {
 }
 .blue-button {
     color: white;
-    box-shadow:
-        rgba(0, 0, 0, 0.16) 0px 3px 6px,
-        rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     background-image: linear-gradient(to bottom, #00d2ff 0%, #3a7bd5 100%);
 }
 .blue-button:active {
-    box-shadow:
-        inset 0 0 6px 4px #205660,
-        0 1px 0 #eeeeee;
+    box-shadow: inset 0 0 6px 4px #205660, 0 1px 0 #eeeeee;
     background-image: linear-gradient(to bottom, #00bcd9 0%, #2855a6 100%);
 }
 .preview {
     color: var(--gray);
     border: 1px solid rgba(0, 0, 0, 0.2);
-    box-shadow:
-        0px 1px 2px 0px rgb(60 64 67 / 30%),
-        0px 2px 6px 2px rgb(60 64 67 / 15%);
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%);
+    background: #ffffff;
 }
 
 #theme-wrapper svg {
@@ -59,6 +54,7 @@ html {
 
 .popup {
     background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
     box-shadow: 2px 7px 14px -5px rgba(0, 0, 0, 0.2);
 }
 .popup-header .popup-text {

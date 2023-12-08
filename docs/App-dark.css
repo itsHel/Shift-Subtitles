@@ -43,24 +43,18 @@ html {
 }
 .blue-button {
     color: white;
-    box-shadow:
-        rgba(0, 0, 0, 0.16) 0px 3px 6px,
-        rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     background-image: linear-gradient(to bottom, #00d2ff 0%, #3a7bd5 100%);
     filter: brightness(0.85);
 }
 .blue-button:active {
-    box-shadow:
-        inset 0 0 6px 4px #205660,
-        0 1px 0 var(--dark);
+    box-shadow: inset 0 0 6px 4px #205660, 0 1px 0 var(--dark);
     background-image: linear-gradient(to bottom, #00bcd9 0%, #2855a6 100%);
 }
 .preview {
     color: var(--textgray);
     border: 1px solid var(--border);
-    box-shadow:
-        0px 1px 2px 0px rgb(60 64 67 / 30%),
-        0px 2px 6px 2px rgb(60 64 67 / 15%);
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%);
     background: var(--darkest);
 }
 
@@ -70,7 +64,8 @@ html {
 
 .popup {
     background: var(--darkest);
-    box-shadow: 2px 4px 11px -2px rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 5px 5px 5px -2px rgb(191 191 191 / 30%);
 }
 .popup-header .popup-text {
     color: var(--white);
