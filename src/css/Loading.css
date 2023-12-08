@@ -1,0 +1,59 @@
+#loader {
+    width: 39px;
+    height: 39px;
+    position: relative;
+    /* Uncomment this and under this to make it run! */
+    animation: create 0.4s ease-out, loader 1.5s linear infinite;
+}
+@keyframes loader {
+    0% {
+        left: -120px;
+    }
+    100% {
+        left: calc(100% + 80px);
+    }
+}
+#box {
+    width: 40px;
+    height: 40px;
+    background: var(--loader-color);
+    animation: animate 0.4s linear infinite;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 3px;
+}
+@keyframes animate {
+    17% {
+        border-bottom-right-radius: 3px;
+    }
+    25% {
+        transform: translateY(9px) rotate(22.5deg);
+    }
+    50% {
+        transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+        border-bottom-right-radius: 40px;
+    }
+    75% {
+        transform: translateY(9px) rotate(67.5deg);
+    }
+    100% {
+        transform: translateY(0) rotate(90deg);
+    }
+}
+#shadow {
+    width: 40px;
+    height: 5px;
+    background: var(--loader-color);
+    opacity: 0.15;
+    position: absolute;
+    top: 49px;
+    left: 0;
+    border-radius: 50%;
+    animation: shadow 0.5s linear infinite;
+}
+@keyframes shadow {
+    50% {
+        transform: scale(1.2, 1);
+    }
+}

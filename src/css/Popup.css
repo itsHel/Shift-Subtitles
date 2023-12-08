@@ -1,0 +1,78 @@
+.popup {
+    --popup-succ-color: #1fb9c0;
+    --popup-error-color: #dc3545;
+    --popup-loading-color: #000000;
+}
+
+.popup {
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    z-index: 999999999;
+    opacity: 0;
+    bottom: 21%;
+    left: 50%;
+    transition: opacity 0.4s, transform 0.55s cubic-bezier(0.54, 1.5, 0.38, 1.025);
+    transform: translate(-50%, 80%) scaleX(0);
+    cursor: pointer;
+    min-width: 150px;
+    pointer-events: none;
+    flex-direction: column;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    padding: 0.5rem 1rem 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+.popup-icons {
+    width: 32px;
+    height: 32px;
+    margin-left: -16px;
+}
+
+.popup > div {
+    width: 100%;
+}
+
+.popup-error {
+    border-left: 5px solid var(--popup-error-color);
+}
+.popup-error .popup-icons {
+    fill: var(--popup-error-color);
+}
+
+.popup-success {
+    border-left: 5px solid var(--popup-succ-color);
+}
+.popup-success .popup-icons {
+    fill: var(--popup-succ-color);
+    margin-right: 5px;
+}
+.popup-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-size: 20px;
+    justify-content: center;
+}
+
+.popup-visible {
+    opacity: 1;
+    transform: translate(-50%, 0%) scaleX(1) rotate(0.05deg);
+    pointer-events: all;
+}
+.popup-header .popup-text {
+    text-transform: capitalize;
+}
+.popup-text {
+    position: relative;
+    text-align: center;
+    font-weight: 500;
+    line-height: 30px;
+}
+
+.popup-text img {
+    position: absolute;
+    transform: translate(-50%, -3px);
+}
