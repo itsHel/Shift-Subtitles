@@ -1,7 +1,7 @@
 const particlesOptions = {
     particles: {
         number: {
-            value: 100,
+            value: 110,
             density: {
                 enable: true,
                 value_area: 800,
@@ -17,7 +17,7 @@ const particlesOptions = {
             },
         },
         opacity: {
-            value: 0.4,
+            value: 0.5,
             random: false,
             anim: {
                 enable: false,
@@ -62,7 +62,7 @@ const particlesOptions = {
         events: {
             onhover: {
                 enable: true,
-                mode: "grab",
+                mode: "repulse",
             },
             onclick: {
                 enable: true,
