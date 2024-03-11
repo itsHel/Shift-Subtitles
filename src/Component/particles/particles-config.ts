@@ -77,6 +77,9 @@ const particlesOptions = {
                     opacity: 0.7,
                 },
             },
+            repulse: {
+                distance: 200,
+            },
         },
     },
     retina_detect: true,
