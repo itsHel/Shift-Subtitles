@@ -11,6 +11,8 @@ import { PopupContext } from "./PopupContext";
 import "./css/App.css";
 import "./css/Popup.css";
 
+// TODO - split into more modules?
+
 const previewRows = 9;
 const changeValueMultiplier = 1000;
 const getTimingRegex = /(\d\d:\d\d:\d\d,\d\d\d)\s+-->\s+(\d\d:\d\d:\d\d,\d\d\d)/g; // 00:00:27,749 --> 00:00:29,708
@@ -189,10 +191,13 @@ function timeToMiliseconds(time: string): number {
 
 function milisecondsToTime(miliseconds: number): string {
     let hours = Math.floor(miliseconds / 3_600_000);
+    hours = Math.max(0, hours);
     miliseconds = miliseconds % 3_600_000;
 
     let minutes = Math.floor(miliseconds / 60_000);
+    minutes = Math.max(0, minutes);
     miliseconds = miliseconds % 60_000;
+    miliseconds = Math.max(0, miliseconds);
 
     let milisecondsString = miliseconds.toString().padStart(5, "0");
 
@@ -223,3 +228,9 @@ function getNthIndexOf(str: string, search: string, count: number) {
 
     return index;
 }
+misa milovnik
+misa mince
+test ebony blade
+test if needs to be in room
+dwk shoty
+ask subs dls	on server + test -1
