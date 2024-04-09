@@ -1,159 +1,152 @@
-import React from "react";
-import Controls from "./Component/Controls";
-import Dropbox from "./Component/Dropbox";
-import Header from "./Component/Header";
-import Preview from "./Component/Preview";
-import ThemeButton from "./Component/ThemeButton";
-import type { Theme } from "./Component/ThemeButton";
-import ParticlesBackground from "./Component/particles/ParticlesBackground";
-import { Popup } from "./Component/Popup";
-import { PopupContext } from "./PopupContext";
-import "./css/App.css";
-import "./css/Popup.css";
+import React from 'react'
+import Controls from './Component/Controls'
+import Dropbox from './Component/Dropbox'
+import Header from './Component/Header'
+import Preview from './Component/Preview'
+import ThemeButton from './Component/ThemeButton'
+import type { Theme } from './Component/ThemeButton'
+import ParticlesBackground from './Component/particles/ParticlesBackground'
+import { Popup } from './Component/Popup'
+import { PopupContext } from './PopupContext'
+import './css/App.css'
+import './css/Popup.css'
 
 // TODO - split into more modules?
 
-const previewRows = 9;
-const changeValueMultiplier = 1000;
-const getTimingRegex = /(\d\d:\d\d:\d\d,\d\d\d)\s+-->\s+(\d\d:\d\d:\d\d,\d\d\d)/g; // 00:00:27,749 --> 00:00:29,708
-const serverUrl = "https://ten-responsible-bayberry.glitch.me";
+const previewRows = 9
+const changeValueMultiplier = 1000
+const getTimingRegex = /(\d\d:\d\d:\d\d,\d\d\d)\s+-->\s+(\d\d:\d\d:\d\d,\d\d\d)/g // 00:00:27,749 --> 00:00:29,708
+const serverUrl = 'https://ten-responsible-bayberry.glitch.me'
 
 interface History {
-    lastTime: string;
-    lastLink: string;
+    lastTime: string
+    lastLink: string
 }
 
 export default function App() {
-    const [filename, setFilename] = React.useState<string>("");
-    const [preview, setPreview] = React.useState<string>("");
-    const [timer, setTimer] = React.useState<string>("0.000");
-    const [theme, setTheme] = React.useState<Theme>("light");
+    const [filename, setFilename] = React.useState<string>('')
+    const [preview, setPreview] = React.useState<string>('')
+    const [timer, setTimer] = React.useState<string>('0.000')
+    const [theme, setTheme] = React.useState<Theme>('light')
     const [history, setHistory] = React.useState<History>({
-        lastTime: "",
-        lastLink: "",
-    });
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const fileContent = React.useRef("");
-    const { open } = React.useContext(PopupContext);
+        lastTime: '',
+        lastLink: '',
+    })
+    const [loading, setLoading] = React.useState<boolean>(false)
+    const fileContent = React.useRef('')
+    const { open } = React.useContext(PopupContext)
 
     React.useEffect(() => {
+        // url download
         if (window.location.search.match(/\?id=/)) {
-            fetch(serverUrl + "/download" + window.location.search, {
-                method: "POST",
+            fetch(serverUrl + '/download' + window.location.search, {
+                method: 'POST',
             })
                 .then((response) => response.text())
                 .then((text) => {
-                    if (text == "error") {
-                        open({ type: "error", text: "File not found" });
-                        return;
+                    if (text == 'error') {
+                        open({ type: 'error', text: 'File not found' })
+                        return
                     }
 
-                    let filename = decodeURI(window.location.search.replace("?id=", "").replace(/\.[^.]+$/, ""));
-
-                    let link = document.createElement("a");
-                    let blob = new Blob([text], { type: "text/plain" });
-
-                    link.download = filename;
-                    link.href = window.URL.createObjectURL(blob);
-                    link.click();
+                    let downloadFilename = decodeURI(window.location.search.replace('?id=', '').replace(/\.[^.]+$/, ''))
+                    downloadFile(text, downloadFilename)
+                    open({ type: 'success', text: 'Subtitles are being downloaded' })
                 })
                 .catch((err) => {
-                    open({ type: "error", text: "Unknown Error" });
-                    return;
-                });
+                    open({ type: 'error', text: 'Unknown Error' })
+                    return
+                })
         }
-    }, []);
+    }, [])
 
     React.useEffect(() => {
         if (filename) {
-            generatePreview();
+            generatePreview()
         }
-    }, [timer]);
+    }, [timer])
 
     function handleFileChange(filename: string, content: string) {
-        setFilename(filename);
-        fileContent.current = content;
-        setHistory({ lastTime: "", lastLink: "" });
-        generatePreview();
+        setFilename(filename)
+        fileContent.current = content
+        setHistory({ lastTime: '', lastLink: '' })
+        generatePreview()
     }
 
     function changeTimer(timer: string) {
-        setTimer(timer);
+        setTimer(timer)
+    }
+
+    function downloadFile(newContent: string, downloadFilename: string = '') {
+        let link = document.createElement('a')
+        let blob = new Blob([newContent], { type: 'text/plain' })
+
+        if (downloadFilename) link.download = downloadFilename
+        else link.download = filename
+
+        link.href = window.URL.createObjectURL(blob)
+        link.dispatchEvent(new MouseEvent('click')) // dispatch event instead of click() for better compatibility
     }
 
     function generate(upload = false) {
-        const thisTimer = timer;
-        const changeValue = parseFloat(timer) * changeValueMultiplier;
+        const thisTimer = timer
+        const changeValue = parseFloat(timer) * changeValueMultiplier
 
-        const newContent = fileContent.current.replaceAll(getTimingRegex, function (match, time1, time2) {
-            return (
-                milisecondsToTime(timeToMiliseconds(time1) + changeValue) +
-                " --> " +
-                milisecondsToTime(timeToMiliseconds(time2) + changeValue)
-            );
-        });
+        const newContent = fileContent.current.replaceAll(getTimingRegex, function (_match, time1: string, time2: string) {
+            return milisecondsToTime(timeToMiliseconds(time1) + changeValue) + ' --> ' + milisecondsToTime(timeToMiliseconds(time2) + changeValue)
+        })
 
         if (!upload) {
-            let link = document.createElement("a");
-            let blob = new Blob([newContent], { type: "text/plain" });
-
-            link.download = filename;
-            link.href = window.URL.createObjectURL(blob);
-
-            link.click();
+            downloadFile(newContent)
         } else {
-            let thisFilename = filename.replaceAll(/&|\/|\\|\?/g, "");
+            let thisFilename = filename.replaceAll(/&|\/|\\|\?/g, '')
 
-            setLoading(true);
+            setLoading(true)
 
-            let formData = new FormData();
-            formData.append("content", newContent);
-            formData.append("filename", thisFilename);
+            let formData = new FormData()
+            formData.append('content', newContent)
+            formData.append('filename', thisFilename)
 
-            fetch(serverUrl + "/upload", { method: "POST", body: formData })
+            fetch(serverUrl + '/upload', { method: 'POST', body: formData })
                 .then((response) => response.text())
                 .then((text) => {
                     try {
-                        setLoading(false);
+                        setLoading(false)
                         setHistory({
                             lastTime: thisTimer,
-                            lastLink: window.location.origin + window.location.pathname + "?id=" + text,
-                        });
+                            lastLink: window.location.origin + window.location.pathname + '?id=' + text,
+                        })
                     } catch (err) {
                         open({
-                            type: "error",
+                            type: 'error',
                             text: "I just don't know what went wrong",
-                        });
+                        })
                     }
                 })
                 .catch((err) => {
-                    setLoading(false);
+                    setLoading(false)
                     open({
-                        type: "error",
+                        type: 'error',
                         text: "I just don't know what went wrong",
-                    });
-                });
+                    })
+                })
         }
     }
 
     function generatePreview() {
-        if (!fileContent.current) return;
+        if (!fileContent.current) return
 
-        let previewLength = getNthIndexOf(fileContent.current, "\n", previewRows);
-        if (previewLength == -1) return;
+        let previewLength = getNthIndexOf(fileContent.current, '\n', previewRows)
+        if (previewLength == -1) return
 
-        let changeValue = parseFloat(timer) * changeValueMultiplier;
-        let previewContent = fileContent.current.slice(0, previewLength);
+        let changeValue = parseFloat(timer) * changeValueMultiplier
+        let previewContent = fileContent.current.slice(0, previewLength)
 
         previewContent = previewContent.replaceAll(getTimingRegex, function (match, time1, time2) {
-            return (
-                milisecondsToTime(timeToMiliseconds(time1) + changeValue) +
-                " --> " +
-                milisecondsToTime(timeToMiliseconds(time2) + changeValue)
-            );
-        });
+            return milisecondsToTime(timeToMiliseconds(time1) + changeValue) + ' --> ' + milisecondsToTime(timeToMiliseconds(time2) + changeValue)
+        })
 
-        setPreview(previewContent);
+        setPreview(previewContent)
     }
 
     return (
@@ -166,71 +159,64 @@ export default function App() {
                 changeTimer={changeTimer}
                 timerValue={timer}
                 generate={generate}
-                lastLink={timer == history.lastTime ? history.lastLink : ""}
+                lastLink={timer == history.lastTime ? history.lastLink : ''}
                 loading={loading}
             />
             <Preview previewText={preview} />
             <Popup />
             {!isNotComputer() && <ParticlesBackground theme={theme} />}
         </div>
-    );
+    )
 }
 
 function isNotComputer() {
-    const phones = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    const phones = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
 
-    return navigator.maxTouchPoints > 0 || navigator.userAgent.match(phones);
+    return navigator.maxTouchPoints > 0 || navigator.userAgent.match(phones)
 }
 
 function timeToMiliseconds(time: string): number {
-    let temp = time.split(":");
-    let miliseconds =
-        parseInt(temp[0]) * 3_600_000 + parseInt(temp[1]) * 60_000 + parseInt(temp[2].replace(/,|\./, ""));
-    return miliseconds;
+    let temp = time.split(':')
+    let miliseconds = parseInt(temp[0]) * 3_600_000 + parseInt(temp[1]) * 60_000 + parseInt(temp[2].replace(/,|\./, ''))
+    return miliseconds
 }
 
 function milisecondsToTime(miliseconds: number): string {
-    let hours = Math.floor(miliseconds / 3_600_000);
-    hours = Math.max(0, hours);
-    miliseconds = miliseconds % 3_600_000;
+    let hours = Math.floor(miliseconds / 3_600_000)
+    hours = Math.max(0, hours)
+    miliseconds = miliseconds % 3_600_000
 
-    let minutes = Math.floor(miliseconds / 60_000);
-    minutes = Math.max(0, minutes);
-    miliseconds = miliseconds % 60_000;
-    miliseconds = Math.max(0, miliseconds);
+    let minutes = Math.floor(miliseconds / 60_000)
+    minutes = Math.max(0, minutes)
+    miliseconds = miliseconds % 60_000
+    miliseconds = Math.max(0, miliseconds)
 
-    let milisecondsString = miliseconds.toString().padStart(5, "0");
+    let milisecondsString = miliseconds.toString().padStart(5, '0')
 
     let time =
-        hours.toString().padStart(2, "0") +
-        ":" +
-        minutes.toString().padStart(2, "0") +
-        ":" +
+        hours.toString().padStart(2, '0') +
+        ':' +
+        minutes.toString().padStart(2, '0') +
+        ':' +
         milisecondsString.substring(0, 2) +
-        "," +
-        milisecondsString.substring(2);
+        ',' +
+        milisecondsString.substring(2)
 
-    return time;
+    return time
 }
 
 function getNthIndexOf(str: string, search: string, count: number) {
-    let index;
+    let index
 
     do {
-        index = str.indexOf(search, index);
-        if (index == -1) return -1;
+        index = str.indexOf(search, index)
+        if (index == -1) return -1
 
-        count--;
-        if (count == 0) return index;
+        count--
+        if (count == 0) return index
 
-        index++;
-    } while (count);
+        index++
+    } while (count)
 
-    return index;
+    return index
 }
-misa milovnik
-misa mince
-test ebony blade
-test if needs to be in room
-dwk shoty
-ask subs dls	on server + test -1
